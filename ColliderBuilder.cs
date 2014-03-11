@@ -2,41 +2,40 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CreateBoxColliders : MonoBehaviour {
+public class ColliderBuilder : MonoBehaviour {
 
 	public tk2dTileMap tileMap;
+
 	private tk2dTileMapData mapData;
 	private Vector2 tileSize;
 	private GameObject colliders;
-	private LayerMask layer;
-	private List<int> collidableTiles;
+	private int colliderLayer;
+
+	public void SetLayerForColliders( int layer ){
+		colliderLayer = layer;
+	}
 
 	public void Remove(){
-
-		// clear map first
 		DestroyImmediate( colliders.gameObject );
-
 	}
 	
-	// Use this for initialization
 	public void Create () {
 
 		Remove ();
 
-		layer = LayerMask.NameToLayer("Pathfinding Grid");
-		gameObject.layer = layer;
+		gameObject.layer = colliderLayer;
 
-		// Create a child object for the colliders
+		// Create a child object for the colliders (makes it easier to delete all the created colliders).
 		GameObject o = new GameObject();
 		o.name = "Colliders";
-		o.layer = layer;
+		o.layer = colliderLayer;
 		o.transform.parent = gameObject.transform;
 		colliders = o;
 
 		// Get our tile map data
 		mapData = tileMap.data;
 
-		// Map Layers
+		// Get map Layers
 		List<tk2dRuntime.TileMap.LayerInfo> tileMapLayers = mapData.tileMapLayers;
 
 		// Get tilesize, this will be the box collider size
@@ -47,22 +46,27 @@ public class CreateBoxColliders : MonoBehaviour {
 
 		// Loop tiles
 		for(int tileMapLayer = 0; tileMapLayer < tileMapLayers.Count; tileMapLayer++){
-			for (int tileMapLayerColumn = 0; tileMapLayerColumn < mapSize.y; tileMapLayerColumn++){
-				for (int tileMapLayerRow = 0; tileMapLayerRow < mapSize.x; tileMapLayerRow++){
+			for (int tileMapColumn = 0; tileMapColumn < mapSize.y; tileMapColumn++){
+				for (int tileMapRow = 0; tileMapRow < mapSize.x; tileMapRow++){
 
 					// Find the current tile
-					Vector3 currentTilePosition = new Vector3(tileMapLayerColumn * tileSize.x, tileMapLayerRow * tileSize.y, tileMapLayer);
-					int currentTileID = tileMap.GetTileIdAtPosition(currentTilePosition, 0);
+					Vector2 currentTilePosition = new Vector2(tileMapColumn * tileSize.x, tileMapRow * tileSize.y);
+					int currentTileID = tileMap.GetTileIdAtPosition(currentTilePosition, tileMapLayer);
 
 					if( TileHasCollider(currentTileID) ){
-						BuildColliderAtPosition( tileMapLayerColumn * tileSize.x, tileMapLayerRow * tileSize.y);
+						BuildColliderAtPosition( tileMapColumn * tileSize.x, tileMapRow * tileSize.y);
 					}
+
 				}
 			}
 		}
+
+
+	
 	}
 
 	bool TileHasCollider( int tileID ){
+
 		if( tileID >= 0 ){
 
 			tk2dSpriteDefinition def = tileMap.SpriteCollectionInst.spriteDefinitions[tileID];
@@ -76,13 +80,14 @@ public class CreateBoxColliders : MonoBehaviour {
 		}else{
 			return false;
 		}
+
 	}
 
 	void BuildColliderAtPosition(float x, float y){
 
 		GameObject o = new GameObject();
 		o.name = "Collider @ " + x + ", " + y;
-		o.layer = layer;
+		o.layer = colliderLayer;
 		o.transform.position = new Vector2(x, y);
 		o.transform.localScale = tileSize;
 		o.AddComponent<BoxCollider2D>();
