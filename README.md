@@ -16,7 +16,7 @@ This scripts finds tiles with ANY collider on it and draws a collider in that po
 Visual Guide
 ============
 
-1. Set Layer ![Step 1](https://raw.github.com/kevdotbadger/BoxColliderGenerator/master/img/choose-tilemap-layer.png =100x)
+1. Set Layer ![Step 1](https://raw.github.com/kevdotbadger/BoxColliderGenerator/master/img/choose-tilemap-layer.png)
 
 2. Generate Colliders ![Step 2](https://raw.github.com/kevdotbadger/BoxColliderGenerator/master/img/preview-of-colliders.png)
 
