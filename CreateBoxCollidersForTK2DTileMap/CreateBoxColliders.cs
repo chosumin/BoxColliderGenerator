@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CreateBoxColliders : MonoBehaviour {
 
@@ -8,6 +9,7 @@ public class CreateBoxColliders : MonoBehaviour {
 	private Vector2 tileSize;
 	private GameObject colliders;
 	private LayerMask layer;
+	private List<int> collidableTiles;
 
 	public void Remove(){
 
@@ -34,6 +36,9 @@ public class CreateBoxColliders : MonoBehaviour {
 		// Get our tile map data
 		mapData = tileMap.data;
 
+		// Map Layers
+		List<tk2dRuntime.TileMap.LayerInfo> tileMapLayers = mapData.tileMapLayers;
+
 		// Get tilesize, this will be the box collider size
 		tileSize = mapData.tileSize;
 
@@ -41,31 +46,36 @@ public class CreateBoxColliders : MonoBehaviour {
 		Vector2 mapSize = new Vector2 (tileMap.width, tileMap.height);
 
 		// Loop tiles
-		for (int i = 0; i < mapSize.y; i++)
-		{
-			for (int j = 0; j < mapSize.x; j++)
-			{
+		for(int tileMapLayer = 0; tileMapLayer < tileMapLayers.Count; tileMapLayer++){
+			for (int tileMapLayerColumn = 0; tileMapLayerColumn < mapSize.y; tileMapLayerColumn++){
+				for (int tileMapLayerRow = 0; tileMapLayerRow < mapSize.x; tileMapLayerRow++){
 
-				// Find the current tile
-				Vector3 currentTilePosition = new Vector3(i * tileSize.x, j * tileSize.y, 0);
-				int currentTileID = tileMap.GetTileIdAtPosition(currentTilePosition, 0);
+					// Find the current tile
+					Vector3 currentTilePosition = new Vector3(tileMapLayerColumn * tileSize.x, tileMapLayerRow * tileSize.y, tileMapLayer);
+					int currentTileID = tileMap.GetTileIdAtPosition(currentTilePosition, 0);
 
-				if( currentTileID >= 0 )
-				{
-					tk2dSpriteDefinition def = tileMap.SpriteCollectionInst.spriteDefinitions[currentTileID];
-
-					if( def.colliderType != tk2dSpriteDefinition.ColliderType.Unset )
-					{
-						BuildColliderAtPosition( i * tileSize.x, j * tileSize.y);
+					if( TileHasCollider(currentTileID) ){
+						BuildColliderAtPosition( tileMapLayerColumn * tileSize.x, tileMapLayerRow * tileSize.y);
 					}
 				}
+			}
+		}
+	}
 
+	bool TileHasCollider( int tileID ){
+		if( tileID >= 0 ){
+
+			tk2dSpriteDefinition def = tileMap.SpriteCollectionInst.spriteDefinitions[tileID];
+			
+			if( def.colliderType != tk2dSpriteDefinition.ColliderType.Unset ){
+				return true;
+			}else{
+				return false;
 			}
 
+		}else{
+			return false;
 		}
-
-
-	
 	}
 
 	void BuildColliderAtPosition(float x, float y){
