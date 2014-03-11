@@ -6,7 +6,7 @@ If you're using [Aron Granberg's A* package](http://arongranberg.com/astar/) and
 Usage
 =====
 
-Drop the package into your project, create a empty gameObject, add the ColliderBuilder.cs to it. Tell ColliderBuilder what map you're using and what layer you want the colliders to be draw on (this is for A*'s `collision testing` feature), then hit "Create Colliders". Finally head over to A*, set the `collisions testings` mask to your chosen layer and scan the grid. If everything goes well and your walls are found, simply cache the grid then click "Remove Colliders" to remove the generated `BoxCollider2D's`.
+Drop the `ColliderBuilder` folder into your project, then create an empty GameObject add the `ColliderBuilder.cs` script to it. Tell `ColliderBuilder` what map you're using and what layer you want the colliders to be draw on (this is for A*'s `collision testing` feature), then hit "Create Colliders". Finally head over to A*, set the `collisions testings` mask to your chosen layer and scan the grid. If everything goes well and your walls are found, simply cache the grid then click "Remove Colliders" to remove the generated `BoxCollider2D's`.
 
 Limitations
 ===========
