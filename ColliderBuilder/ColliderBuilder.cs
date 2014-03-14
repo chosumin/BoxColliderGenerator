@@ -23,7 +23,7 @@ public class ColliderBuilder : MonoBehaviour {
 		DestroyImmediate( colliders.gameObject );
 	}
 
-	public void CreateColliderParentGameObject(){
+	private void CreateColliderParentGameObject(){
 		GameObject o = new GameObject();
 		o.name = "Colliders";
 		o.layer = colliderLayer;
@@ -70,7 +70,7 @@ public class ColliderBuilder : MonoBehaviour {
 	
 	}
 
-	bool TileHasCollider( int tileID ){
+	private bool TileHasCollider( int tileID ){
 
 		if( tileID >= 0 ){
 			tk2dSpriteDefinition def = tileMap.SpriteCollectionInst.spriteDefinitions[tileID];
@@ -81,7 +81,7 @@ public class ColliderBuilder : MonoBehaviour {
 
 	}
 
-	void BuildColliderAtPosition( Vector2 position ){
+	private void BuildColliderAtPosition( Vector2 position ){
 
 		GameObject boxColliderGameObject = new GameObject();
 		boxColliderGameObject.name = "Collider @ " + position.x + ", " + position.y;
