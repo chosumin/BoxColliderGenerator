@@ -53,8 +53,8 @@ public class ColliderBuilder : MonoBehaviour {
 
 		// Loop tiles
 		for(int tileMapLayer = 0; tileMapLayer < tileMapLayers.Count; tileMapLayer++){
-			for (int tileMapColumn = 0; tileMapColumn < mapSize.y; tileMapColumn++){
-				for (int tileMapRow = 0; tileMapRow < mapSize.x; tileMapRow++){
+			for(int tileMapColumn = 0; tileMapColumn < mapSize.y; tileMapColumn++){
+				for(int tileMapRow = 0; tileMapRow < mapSize.x; tileMapRow++){
 
 					// Find the current tile
 					currentTilePosition = new Vector2(tileMapColumn * tileSize.x, tileMapRow * tileSize.y);
