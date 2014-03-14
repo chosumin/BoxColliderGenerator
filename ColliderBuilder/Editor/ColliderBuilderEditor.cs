@@ -17,11 +17,11 @@ public class ColliderBuilderEditor : Editor {
 
 		if(GUILayout.Button("Create Colliders")){
 			colliderBuilder.SetLayerForColliders( selectedLayer );
-			colliderBuilder.Create();
+			colliderBuilder.CreateColliders();
 		}
 
 		if(GUILayout.Button("Remove Colliders")){
-			colliderBuilder.Remove();
+			colliderBuilder.RemoveColliders();
 		}
 
 	}
